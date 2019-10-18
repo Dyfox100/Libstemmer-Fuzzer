@@ -1,0 +1,8 @@
+Notes about Fuzzing Libstemmer:
+1. Generating large amounts of random data to input into some app to cause a crash.
+2. Try to determine what values could be potentially dangerous to app (ex. 0 or negative values for something that should be a positive number, etc...)
+  a. libstemmer is designed to stem UTF-8 strings. Maybe non-UTF-8 chars, valid strings with a non-valid char in the ending (ex. "play_ng" where _ is non-utf8).
+  b. If out of memory exception occurs, libstemmer will return null. Maybe extremely large strings to try and cause crash.
+  c. Mongo uses libstemmer for full text search, so will need to eventually figure out what values mongo will allow into text fields,
+     but entering bad data than running a full text search could trigger a crash.
+3. There's examples of how to call libstemmer in source folder of libstemmer in mongo repo, replicate this call in python with Ctypes. 
