@@ -22,8 +22,13 @@ class libstemmer_harness():
     def stem_word_and_get_error_number(self, word):
         buffer = ctypes.create_string_buffer(len(word))
         buffer.value = bytes(word, 'utf-8')
-        self._stem_word(buffer, len(word))
-        return {word: ctypes.get_errno()}
+
+        _result = self._stem_word(buffer, len(word))
+
+        result = {}
+        if _result == None:
+            result[word] = ctypes.get_errno()
+        return result
 
 if __name__ == "__main__":
     libstemmer_harness_fpath = os.path.join(

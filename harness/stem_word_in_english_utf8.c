@@ -18,7 +18,7 @@ unsigned char * stem_word(unsigned char * word, int length){
     fprintf(stderr, "Error in english stemmer creation");
     exit(1);
   }
-
+  
   stemmed_word = sb_stemmer_stem(stemmer, word, length);
   return stemmed_word;
 }
