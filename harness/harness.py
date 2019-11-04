@@ -1,20 +1,33 @@
 import ctypes
-from os import path
+from ctypes import util
+import errno
+import os
+from multiprocessing import Process
+
 
 class libstemmer_harness():
 
-    def __init__(self, libstemmer_file_path):
-        if not path.exists(libstemmer_file_path):
-            raise("Libstemmer File Path Invalid!")
-        self._libstemmer_functions = ctypes.CDLL(libstemmer_file_path)
-        self._stemmer = self._libstemmer_functions.sb_stemmer_new("english", None)
-        self._libstemmer_functions.sb_stemmer_new.restype = ctypes.c_char_p
+    def __init__(self, harness_file_path):
 
-    def stem_word(self, word):
-        self._buffer = ctypes.create_string_buffer(len(word))
-        self._buffer.value = bytes(word, 'utf-8')
-        self._libstemmer_functions.sb_stemmer_stem(self._stemmer, self._buffer, len(word))
+        if not os.path.isfile(harness_file_path):
+            raise(FileNotFoundError(
+                errno.ENOENT, "C Test Harness .so file does not exist, or it's path is invalid."
+                + " Maybe run make at the top level? File name", harness_file))
+        #libstemmer harness function ctypes definition
+        self._libstemmer_functions = ctypes.CDLL(harness_file_path, use_errno=True)
+        self._stem_word = self._libstemmer_functions.stem_word
+        self._stem_word.argtypes = [ctypes.c_char_p]
+        self._stem_word.restype = ctypes.c_char_p
+
+    def stem_word_and_get_error_number(self, word):
+        buffer = ctypes.create_string_buffer(len(word))
+        buffer.value = bytes(word, 'utf-8')
+        self._stem_word(buffer, len(word))
+        return {word: ctypes.get_errno()}
 
 if __name__ == "__main__":
-    harness = libstemmer_harness("../libstemmer_c/libstemmer.so")
-    harness.stem_word("testing")
+    libstemmer_harness_fpath = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "stem_word.so")
+    harness = libstemmer_harness(libstemmer_harness_fpath)
+    print(harness.stem_word_and_get_error_number("testing"))
