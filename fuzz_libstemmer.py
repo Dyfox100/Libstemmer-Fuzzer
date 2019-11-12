@@ -4,9 +4,9 @@ from datetime import datetime
 import json
 
 from harness.harness import libstemmer_harness
-from Fuzzer.fuzzer_base_class.string_fuzzer import String_Fuzzer
-from Fuzzer.fuzzing_strategies.english_valid_UTF8_strategy import English_Valid_UTF8_Strategy
-from Fuzzer.fuzzing_strategies.random_non_valid_utf8 import Random_Non_Valid_UTF8_Strategy
+from fuzzer.fuzzer_base_class.string_fuzzer import String_Fuzzer
+from fuzzer.fuzzing_strategies.english_valid_UTF8_strategy import English_Valid_UTF8_Strategy
+from fuzzer.fuzzing_strategies.random_non_valid_utf8 import Random_Non_Valid_UTF8_Strategy
 
 
 def main(num_runs, length_string, strategy, output, verbose):
@@ -16,7 +16,7 @@ def main(num_runs, length_string, strategy, output, verbose):
     harness = libstemmer_harness(libstemmer_harness_fpath)
 
     result_file = open(output, 'w+')
-    result_file.write('String')
+    result_file.write('String,C_Error_Number,Process_Exit_Code')
 
     try:
         fuzzing_strategy = None
@@ -33,7 +33,6 @@ def main(num_runs, length_string, strategy, output, verbose):
             if verbose:
                 result_file.write()
             else:
-                print(fuzz_result)
                 if fuzz_result[word]["C_error_number"] != 0 or fuzz_result[word]["process_exit_code"] != 0:
                     result_file.write(word.decode('utf-8', 'backslashreplace') + ',' + str(fuzz_result[word]["C_error_number"]) + ',' + str(fuzz_result[word]["process_exit_code"]) )
 

@@ -1,7 +1,7 @@
 import random
 from binascii import unhexlify
 
-from Fuzzer.fuzzing_strategies.base_strategy.base_strategy import Abstract_Strategy
+from fuzzer.fuzzing_strategies.base_strategy.base_strategy import Abstract_Strategy
 
 class English_Valid_UTF8_Strategy(Abstract_Strategy):
 
