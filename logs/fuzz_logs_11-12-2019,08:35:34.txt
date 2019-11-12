@@ -1,2 +1,0 @@
-String,C_Error_Number,Process_Exit_Code
-L7%^1,0,0
