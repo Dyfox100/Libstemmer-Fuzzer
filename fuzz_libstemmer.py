@@ -16,7 +16,7 @@ def main(num_runs, length_string, strategy, output, verbose):
     harness = libstemmer_harness(libstemmer_harness_fpath)
 
     result_file = open(output, 'w+')
-    result_file.write('String,C_Error_Number,Process_Exit_Code')
+    result_file.write('String,C_Error_Number,Process_Exit_Code\n')
 
     try:
         fuzzing_strategy = None
@@ -31,7 +31,8 @@ def main(num_runs, length_string, strategy, output, verbose):
             word = fuzzer.generate_fuzzy_string(length_string)
             fuzz_result = harness.test_word(word)
             if verbose:
-                result_file.write()
+                result_file.write(word.decode('utf-8', 'backslashreplace') + ',' + str(fuzz_result[word]["C_error_number"]) + ',' + str(fuzz_result[word]["process_exit_code"]) + '\n' )
+
             else:
                 if fuzz_result[word]["C_error_number"] != 0 or fuzz_result[word]["process_exit_code"] != 0:
                     result_file.write(word.decode('utf-8', 'backslashreplace') + ',' + str(fuzz_result[word]["C_error_number"]) + ',' + str(fuzz_result[word]["process_exit_code"]) )
@@ -53,7 +54,6 @@ if __name__ == "__main__":
 
 
     args = parser.parse_args()
-
     if args.output == None:
         args.output = 'fuzz_logs_' + datetime.now().strftime("%m-%d-%Y,%H:%M:%S") + '.txt'
 
