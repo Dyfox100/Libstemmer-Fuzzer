@@ -31,11 +31,11 @@ def main(num_runs, length_string, strategy, output, verbose):
             word = fuzzer.generate_fuzzy_string(length_string)
             fuzz_result = harness.test_word(word)
             if verbose:
-                result_file.write(word.decode('utf-8', 'backslashreplace') + ',' + str(fuzz_result[word]["C_error_number"]) + ',' + str(fuzz_result[word]["process_exit_code"]) + '\n' )
+                result_file.write(word.decode('utf-8', 'backslashreplace') + '\t,,\t' + str(fuzz_result[word]["C_error_number"]) + '\t,,\t' + str(fuzz_result[word]["process_exit_code"]) + '\n' )
 
             else:
                 if fuzz_result[word]["C_error_number"] != 0 or fuzz_result[word]["process_exit_code"] != 0:
-                    result_file.write(word.decode('utf-8', 'backslashreplace') + ',' + str(fuzz_result[word]["C_error_number"]) + ',' + str(fuzz_result[word]["process_exit_code"]) )
+                    result_file.write(word.decode('utf-8', 'backslashreplace') + '\t,,\t' + str(fuzz_result[word]["C_error_number"]) + '\t,,\t' + str(fuzz_result[word]["process_exit_code"]) )
 
     except Exception as e:
         result_file.close()
