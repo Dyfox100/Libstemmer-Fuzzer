@@ -1,12 +1,9 @@
-from random import Random
+
 from binascii import unhexlify
 
 from fuzzer.fuzzing_strategies.base_strategy.base_strategy import Abstract_Strategy
 
 class English_Valid_UTF8_Strategy(Abstract_Strategy):
-    def __init__(self, seed):
-        self._random = Random(seed)
-        self.seed = seed
 
     def generate(self):
         #valid range for standard ascii enligsh chars is
