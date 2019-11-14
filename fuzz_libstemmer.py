@@ -55,6 +55,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     if args.output == None:
-        args.output = 'logs/fuzz_logs_' + datetime.now().strftime("%m-%d-%Y,%H:%M:%S") + '.txt'
+        args.output = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'logs/fuzz_logs_' + datetime.now().strftime("%m-%d-%Y,%H:%M:%S") + '.txt')
 
     main(args.num_runs, args.length_string, args.strategy, args.output, args.v)
