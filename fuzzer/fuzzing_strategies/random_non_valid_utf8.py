@@ -1,11 +1,13 @@
 import random
 from binascii import unhexlify
 
-from fuzzer.fuzzing_strategies.base_strategy.base_strategy import Abstract_Strategy
+from .base_strategy.base_strategy import Abstract_Strategy
 
 class Random_Non_Valid_UTF8_Strategy(Abstract_Strategy):
+    def __init__(self, seed=None):
+        super(Random_Non_Valid_UTF8_Strategy, self).__init__(seed)
 
-    def generate(self):
+    def generate(self, seed=None):
         #valid range for standard ascii enligsh chars is
         #0x20 to 0x7e.
         num_bytes = random.randint(1, 4)

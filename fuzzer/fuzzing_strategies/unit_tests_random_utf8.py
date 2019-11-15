@@ -2,7 +2,7 @@ import unittest
 
 from random_non_valid_utf8 import Random_Non_Valid_UTF8_Strategy
 
-class Test_Random_Nonvalid_UTF8(unittest.TestCase):
+class Test_Random_Non_Valid_UTF8(unittest.TestCase):
     def setUp(self):
         self._strategy = Random_Nonvalid_UTF8_Strategy()
 
